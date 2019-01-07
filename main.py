@@ -105,7 +105,7 @@ class GameScene(SceneBase):
     def Update(self):
     	active_beings_copy = copy.deepcopy(self.active_beings)
         for being in active_beings_copy['fungi']:
-        	newBeing = being.attemptToMultiply(0.02)
+        	newBeing = being.attemptToMultiply()
         	if newBeing == None:
         		continue
         	elif newBeing.alive == True:
