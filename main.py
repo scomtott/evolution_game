@@ -90,7 +90,6 @@ class GameScene(SceneBase):
     def __init__(self):
         SceneBase.__init__(self)
         self.active_beings = {'fungi': []}
-        self.occupied = OccupiedArea(wp.width, wp.height)
     
     def ProcessInput(self, events, pressed_keys):
         for event in events:
@@ -98,12 +97,10 @@ class GameScene(SceneBase):
         		fungus = beings.Fungus()
         		if fungus.alive == True:
         			self.active_beings['fungi'].append(fungus)
-        	
-        	if event.type == pygame.KEYDOWN and event.key == pygame.K_UP:
-        		print self.occupied.is_occupied
         
     def Update(self):
     	active_beings_copy = copy.deepcopy(self.active_beings)
+    	#print "active beings:", len(self.active_beings['fungi'])
         for being in active_beings_copy['fungi']:
         	newBeing = being.attemptToMultiply()
         	if newBeing == None:
@@ -112,35 +109,17 @@ class GameScene(SceneBase):
         		self.active_beings['fungi'].append(newBeing)
         	else:
         		pass
+        	if not being.alive:
+        		print "being is dead"
+        #occupied = beings.occupied.is_occupied
+        #for x in occupied:
+        #	print occupied.iloc[[x]]
+        #quit()
     
     def Render(self, screen):
         screen.fill((0, 0, 0))
         for being in self.active_beings['fungi']:
         	being.drawSelf(screen)
 
-run_game(wp.width, wp.height, wp.fps, TitleScene())
-
-
-"""
-activeBeings = {'fungi':[]}
-
-while not done:
-	
-	for event in pygame.event.get():
-		if event.type == pygame.QUIT:
-			done = True
-			
-		pressed = pygame.key.get_pressed()
-		if pressed[pygame.K_SPACE]:
-			fungus = beings.Fungus()
-			activeBeings['fungi'].append(fungus)
-			screen.blit(background, (0,0))
-			for being in activeBeings['fungi']:
-				being.drawSelf(screen)
-			
-	
-			
-	pygame.display.flip()
-	clock.tick(60)
-"""	                
+run_game(wp.width, wp.height, wp.fps, TitleScene())                
 	    
