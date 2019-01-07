@@ -6,6 +6,14 @@ and in some way mimics real life creatures - desire to reproduce, find food, con
 etc. Players will be able to influence the environment (but not directly the behaviour
 of the creatures). Currently unsure what the player's goal should be.
 
+Info:
+
+Written in Python 2.7 for Windows with PyGame.
+
+Required non-standard modules:
+pygame
+pandas
+
 Current functionality:
 
 Window opens with red "title screen" - will be made a bit more exciting at some later 
