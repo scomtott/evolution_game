@@ -36,21 +36,6 @@ class OccupiedArea(object):
 				cells.append(arr[i][j])
 		return cells
 				
-	def changeCell(self, being, position, operation):
-		
-		if operation == 'occupy':
-			before = self.getBorderingCells(position, self.is_occupied)
-			self.occupy(being, position)
-			after = self.getBorderingCells(position, self.is_occupied)
-			if not tests.verifySame(before, after):
-				print "Changing the cell has changed its surroundings."
-				quit()
-		elif operation == 'vacate':
-			print "not written this yet"
-			pass
-		else:
-			print "Unkown operation."
-		
 	def isOccupied(self, positions):
 		#check whether multiple or only one position has been supplied
 		if type(positions) == type([]):
@@ -76,14 +61,38 @@ class OccupiedArea(object):
 				return False                                                                                                 
 		else:
 			print "something unexpected has been passed to isOccupied"                                         
-		                                                                                                                  
+		
+	def changeCell(self, being, position, operation):
+		if operation == 'occupy':
+			function = self.occupy
+		elif operation == 'vacate':
+			function = self.vacate
+		else:
+			print "Don't know about that function yet."
+			quit()
+		
+		before = self.getBorderingCells(position, self.is_occupied)
+		function(being, position)
+		after = self.getBorderingCells(position, self.is_occupied)
+		if not tests.verifySame(before, after):
+			print "Changing the cell has changed its surroundings."
+			quit()
+			
 	def occupy(self, being, position):                                                                                    
 		x = position.x
 		y = position.y       
 		self.is_occupied[x][y]['occupants'].append(being)
 	
-	def vacate(self, position):
+	def vacate(self, being, position):
 		x = position.x
 		y = position.y
-		self.is_occupied[x][y]['state'] = False
+		old = copy.deepcopy(self.is_occupied[x][y]['occupants'])
+		if being in old:
+			new = []
+			for oldBeing in old:
+				if oldBeing == being:
+					continue
+				else:
+					new.append(oldBeing)
+		self.is_occupied[x][y]['occupants'] = new
 		
