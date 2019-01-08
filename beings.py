@@ -97,7 +97,8 @@ class Fungus(PointBeing):
 		if alive:
 			self.position = position
 			self.alive = True
-			occupied.occupy(self, position)
+			#occupied.occupy(self, position)
+			occupied.changeCell(self, position, 'occupy')
 			self.colour = (255, 255, 255)
 			
 		elif not alive:
