@@ -85,43 +85,23 @@ class Fungus(PointBeing):
 		
 		check = self.checkIfOccupied(position)
 		
-		#print "check", check
-		
 		if check == True:
-			print "check: ", check
 			#if position is already occupied, the being dies
-			#print "Position occupied"
-			
 			return False
+			
 		elif check == False:
 			#if position is unoccupied, the being lives.
-			
 			return True
 			
 	def setBeingParameters(self, alive, position):
 		if alive:
 			self.position = position
 			self.alive = True
-			#print "x: ", self.position.x, "y: ", self.position.y
-			occupied.occupy(position)
-			
-			
-			
-			#x= position.x
-			#y= position.y
-			#print "               ", x - 1, "                              ", x, "                              ", x + 1
-			#print y-2, occupied.is_occupied[x - 1][y - 2], occupied.is_occupied[x][y], occupied.is_occupied[x + 1][y]
-			#print y-1, occupied.is_occupied[x - 1][y - 1], occupied.is_occupied[x][y], occupied.is_occupied[x + 1][y]
-			#print y, occupied.is_occupied[x - 1][y], occupied.is_occupied[x][y], occupied.is_occupied[x + 1][y]
-			#print y + 1,occupied.is_occupied[x - 1][y + 1], occupied.is_occupied[x][y], occupied.is_occupied[x + 1][y]
-			
-			  
-			
+			occupied.occupy(self, position)
 			self.colour = (255, 255, 255)
 			
 		elif not alive:
 			self.position = Position(0,0)
-			print "Not alive ", "x: ", self.position.x, "y: ", self.position.y
 			self.alive = False
 			self.colour = (255, 0, 0)        
 			
@@ -130,7 +110,7 @@ class Fungus(PointBeing):
 			
 		self.spawnPosition = position
 		self.size = 1
-		self.multiplyProb = 0.002
+		self.multiplyProb = 0.004
 		self.isColony = False
 	
 	def attemptToMultiply(self):
@@ -153,5 +133,4 @@ class Fungus(PointBeing):
 		newPos = Position(self.position.x + rng.randint(-5,5),
 						  self.position.y + rng.randint(-5,5))
 		newFungus = Fungus(position=newPos)
-		#print "new position", newPos.x, newPos.y
 		return newFungus

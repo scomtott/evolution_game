@@ -2,6 +2,9 @@ import pandas as pd
 import numpy as np
 import copy
 
+def memory_address(in_var):
+	return hex(id(in_var))
+
 class Position(object):
 	def __init__(self, x, y):
 		self.x = int(x)
@@ -18,15 +21,8 @@ class OccupiedArea(object):
 		self.width = width
 		self.height = height
 		
-		col = [{'state':False, 'by':[]} for i in range(height)]
-		arr = [col for j in range(width)]
+		arr = [[{'occupants':[]} for h in range(height)] for w in range(width)]	
 		self.is_occupied = arr
-		
-		
-		
-		#col = [{'state': False, 'by': []} for i in range(height)]
-		#d = {key : value for (key,value) in [(j, col) for j in range(width)]}
-		#self.is_occupied = pd.DataFrame(data=d)
 		
 	def isOccupied(self, positions):
 		#check whether multiple or only one position has been supplied
@@ -35,40 +31,53 @@ class OccupiedArea(object):
 			for position in positions:
 				x = position.x
 				y = position.y
-				result = self.is_occupied[x][y]['state']
-				if result == True:
+				occupants = self.is_occupied[x][y]['occupants']
+				if occupants:
 					#return True as soon as a true value is found
-					return result
+					return True
 			#return false if all positions are unoccupied
-			return result
+			return False                              
 		elif type(positions) == type(Position(0,0)):
 			#positions contains only one value
 			position = positions
 			x = position.x
 			y = position.y
-			result = self.is_occupied[x][y]['state']
-			print x, y, result
-			return result                                                                                                        
+			occupants = self.is_occupied[x][y]['occupants']
+			if occupants:
+				return True
+			else:
+				return False                                                                                                 
 		else:
 			print "something unexpected has been passed to isOccupied"                                         
 		                                                                                                                  
-	def occupy(self, position):                                                                                    
+	def occupy(self, being, position):                                                                                    
 		x = position.x
 		y = position.y       
 		
-		print "               ", x - 1, "                              ", x, "                              ", x + 1
-		print y-1, self.is_occupied[x - 1][y - 1], self.is_occupied[x][y], self.is_occupied[x + 1][y]
-		print y, self.is_occupied[x - 1][y], self.is_occupied[x][y], self.is_occupied[x + 1][y]
-		print y + 1,self.is_occupied[x - 1][y + 1], self.is_occupied[x][y], self.is_occupied[x + 1][y]   
-				         	                   
-		print self.is_occupied[x][y]
-		self.is_occupied[x][y]['state'] = True
-		print self.is_occupied[x][y]
-		
-		print "               ", x - 1, "                              ", x, "                              ", x + 1
-		print y-1, self.is_occupied[x - 1][y - 1], self.is_occupied[x][y], self.is_occupied[x + 1][y]
-		print y, self.is_occupied[x - 1][y], self.is_occupied[x][y], self.is_occupied[x + 1][y]
-		print y + 1,self.is_occupied[x - 1][y + 1], self.is_occupied[x][y], self.is_occupied[x + 1][y]   
+		#print "               ", x - 1, "                              ", x, "                              ", x + 1
+		#print y-1, self.is_occupied[x - 1][y - 1], self.is_occupied[x][y-1], self.is_occupied[x + 1][y-1]
+		#print y, self.is_occupied[x - 1][y], self.is_occupied[x][y], self.is_occupied[x + 1][y]
+		#print y + 1,self.is_occupied[x - 1][y + 1], self.is_occupied[x][y+1], self.is_occupied[x + 1][y+1]  		
+		#
+		#print memory_address(self.is_occupied[y-1][x])
+		#print memory_address(self.is_occupied[y][x])
+		#print memory_address(self.is_occupied[y+1][x])
+		#
+		#print self.is_occupied[x][y]
+		self.is_occupied[x][y]['occupants'].append(being)
+		#print self.is_occupied[x][y]
+		#                                
+		#print "               ", x - 1, "                              ", x, "                              ", x + 1
+		#print y-1, self.is_occupied[x - 1][y - 1], self.is_occupied[x][y-1], self.is_occupied[x + 1][y-1]
+		#print y, self.is_occupied[x - 1][y], self.is_occupied[x][y], self.is_occupied[x + 1][y]
+		#print y + 1,self.is_occupied[x - 1][y + 1], self.is_occupied[x][y+1], self.is_occupied[x + 1][y+1]   
+		#print y-1, self.is_occupied[x][y-1]
+		#print y+1, self.is_occupied[x][y+1]
+		#
+		#
+		#print memory_address(self.is_occupied[y-1][x])
+		#print memory_address(self.is_occupied[y][x])
+		#print memory_address(self.is_occupied[y+1][x])
 	
 	def vacate(self, position):
 		x = position.x

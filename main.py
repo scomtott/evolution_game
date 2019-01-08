@@ -111,10 +111,6 @@ class GameScene(SceneBase):
         		pass
         	if not being.alive:
         		print "being is dead"
-        #occupied = beings.occupied.is_occupied
-        #for x in occupied:
-        #	print occupied.iloc[[x]]
-        #quit()
     
     def Render(self, screen):
         screen.fill((0, 0, 0))
